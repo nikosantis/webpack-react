@@ -1,21 +1,17 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 
 module.exports = {
   entry: {
-    home: path.resolve(__dirname, 'src/js/index.js'),
-    contacto: path.resolve(__dirname, 'src/js/contacto.js'),
+    app: path.resolve(__dirname, 'src/index.js'),
   },
-  mode: 'production',
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'js/[name].js',
-    publicPath: 'dist/',
+    publicPath: 'http://localhost:3001/',
     chunkFilename: 'js/[id].[chunkhash].js'
-  },
-  devServer: {
-
   },
   module: {
     rules: [
@@ -27,16 +23,18 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          'style-loader',
+          {
+            loader: MiniCssExtractPlugin.loader,
+          },
           'css-loader'
         ]
       },
       {
         test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
         use: {
-          loader: 'file-loader',
+          loader: 'url-loader',
           options: {
-            outputPath: 'assets/'
+            limit: 1000
           }
         }
       },
@@ -49,7 +47,7 @@ module.exports = {
     }),
     new HtmlWebpackPlugin({
       title: 'Webpack Dev Server',
-      template: path.resolve(__dirname, 'index.html')
+      template: path.resolve(__dirname, 'public/index.html')
     }),
     new webpack.DllReferencePlugin({
       manifest: require('./modules-manifest.json')
