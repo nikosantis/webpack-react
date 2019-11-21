@@ -1,6 +1,5 @@
 const path = require('path')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const webpack = require('webpack')
 
 module.exports = {
@@ -15,6 +14,9 @@ module.exports = {
     publicPath: 'dist/',
     chunkFilename: 'js/[id].[chunkhash].js'
   },
+  devServer: {
+
+  },
   module: {
     rules: [
       {
@@ -25,54 +27,16 @@ module.exports = {
       {
         test: /\.css$/,
         use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 1
-            }
-          },
-          'postcss-loader',
-        ]
-      },
-      {
-        test: /\.less$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          'css-loader',
-          'less-loader',
-        ]
-      },
-      {
-        test: /\.scss$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          'css-loader',
-          'sass-loader'
-        ]
-      },
-      {
-        test: /\.styl$/,
-        use: [
-          {
-            loader: MiniCssExtractPlugin.loader
-          },
-          'css-loader',
-          'stylus-loader',
+          'style-loader',
+          'css-loader'
         ]
       },
       {
         test: /\.jpg|png|gif|woff|eot|ttf|svg|mp4|webm$/,
         use: {
-          loader: 'url-loader',
+          loader: 'file-loader',
           options: {
-            limit: 90000,
+            outputPath: 'assets/'
           }
         }
       },
